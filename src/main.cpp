@@ -10,7 +10,7 @@ using std::cin;
 
 static void display_board();
 static void make_number_appear();
-
+static void move_left();
 
 static vector <vector<int>> board
 {    {0,0,0,0}
@@ -24,23 +24,45 @@ static std::mt19937 gen(rd());
 static std::uniform_int_distribution<int> dice(1, 10);
 
 int main() {
+    board.at(0) = {0, 2, 0, 4};
 cout << "Welcome to 2048! The controls are: W for up, S for down, A for left, D for right, R to reset the game" << endl;
     char direction{};
     make_number_appear();
     make_number_appear();
     display_board();
-    while (direction != 'w' && direction != 's' && direction != 'a' && direction != 'd' && direction != 'r')
-    {
-        cout << "\ninput only W,A,S,D allowed:" << endl;
+
+        cout << "\nInput only W,A,S,D allowed:" << endl;
         do {
             cout << "Input:";
             cin >> direction;
             direction = static_cast<char>(std::tolower(direction));
             cout << endl;
-            cout << direction << endl;
+            if (direction !=  'r') {
+                switch (direction) {
+                    case 'w': {
+                        break;
+                    }
+                    case 's': {
+                        break;
+                    }
+                    case 'a': {
+                        move_left();
+                        break;
+                    }
+                    case 'd': {
+                        break;
+                    }
+                    default: {
+                        cout << "Invalid input! Try again." << endl;
+                        break;
+                    }
+                }
+            }else {
+                cout << "Reseting..." << endl;
+            }
+            display_board();
         }
         while (direction != 'r');
-    }
     return 0;
 }
 
@@ -74,4 +96,16 @@ void make_number_appear() {
     else {
         board.at(row_and_column.first).at(row_and_column.second) = 4;
     }
+}
+
+void move_left() {
+    static vector <int> new_row {};
+    for (size_t column{0}; column < board.size(); column++) {
+        if (board.at(0).at(column) != 0) {
+                new_row.push_back(column);
+        }else {
+        }
+    }
+
+    cout << new_row.size() << endl;
 }
