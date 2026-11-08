@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <cctype>
 
 using std::cout;
 using std::endl;
@@ -23,19 +24,31 @@ static std::mt19937 gen(rd());
 static std::uniform_int_distribution<int> dice(1, 10);
 
 int main() {
-
+cout << "Welcome to 2048! The controls are: W for up, S for down, A for left, D for right, R to reset the game" << endl;
+    char direction{};
     make_number_appear();
     make_number_appear();
     display_board();
-
+    while (direction != 'w' && direction != 's' && direction != 'a' && direction != 'd' && direction != 'r')
+    {
+        cout << "\ninput only W,A,S,D allowed:" << endl;
+        do {
+            cout << "Input:";
+            cin >> direction;
+            direction = static_cast<char>(std::tolower(direction));
+            cout << endl;
+            cout << direction << endl;
+        }
+        while (direction != 'r');
+    }
     return 0;
 }
 
 void display_board(){
-    for (size_t i{0}; i < board.size(); i++) {
+    for (size_t row{0}; row < board.size(); row++) {
         cout << endl;
-        for (size_t j{0}; j < board[i].size(); j++) {
-            cout << board.at(i).at(j) << " ";
+        for (size_t column{0}; column < board[row].size(); column++) {
+            cout << board.at(row).at(column) << " ";
         }
     }
 }
