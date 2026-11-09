@@ -58,9 +58,10 @@ cout << "Welcome to 2048! The controls are: W for up, S for down, A for left, D 
                     }
                 }
             }else {
-                cout << "Reseting..." << endl;
+                cout << "Resetting..." << endl;
             }
             display_board();
+            cout << endl;
         }
         while (direction != 'r');
     return 0;
@@ -99,13 +100,17 @@ void make_number_appear() {
 }
 
 void move_left() {
-    static vector <int> new_row {};
+    vector <int> new_row {};
     for (size_t column{0}; column < board.size(); column++) {
         if (board.at(0).at(column) != 0) {
-                new_row.push_back(column);
+                new_row.push_back(board.at(0).at(column));
         }else {
         }
     }
-
+    //hier weiter machen!
+    while (new_row.size() < board.size()) {
+        new_row.push_back(0);
+    }
+    board.at(0) = new_row;
     cout << new_row.size() << endl;
 }
