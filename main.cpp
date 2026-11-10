@@ -24,14 +24,14 @@ static std::mt19937 gen(rd());
 static std::uniform_int_distribution<int> dice(1, 10);
 
 int main() {
-    board.at(0) = {0, 2, 0, 4};
+    board.at(0) = {0, 2, 2, 4};
 cout << "Welcome to 2048! The controls are: W for up, S for down, A for left, D for right, R to reset the game" << endl;
     char direction{};
     make_number_appear();
     make_number_appear();
     display_board();
 
-        cout << "\nInput only W,A,S,D allowed:" << endl;
+        cout << "\nInput only W,A,S,D,R allowed:" << endl;
         do {
             cout << "Input:";
             cin >> direction;
@@ -78,13 +78,15 @@ void display_board(){
 
 void make_number_appear() {
     vector <std::pair<int, int>> position;
-
     for (size_t row{0}; row < board.size(); row++) {
         for (size_t column{0}; column < board[row].size(); column++) {
             if (board.at(row).at(column) == 0) {
                 position.push_back({row, column});
             }else {
             }
+        }
+        if (position.empty()) {
+            return;
         }
     }
     std::uniform_int_distribution<int> size_roll(0, position.size() - 1);
@@ -100,17 +102,35 @@ void make_number_appear() {
 }
 
 void move_left() {
-    vector <int> new_row {};
-    for (size_t column{0}; column < board.size(); column++) {
-        if (board.at(0).at(column) != 0) {
-                new_row.push_back(board.at(0).at(column));
-        }else {
+    vector<vector<int>> board_before_move {board};
+    for (size_t row{0}; row < board.size(); row++) {
+        size_t counter {0};
+        vector <int> new_row {};
+        vector <int> merged_row {};
+        for (size_t column{0}; column < board.size(); column++) {
+            if (board.at(row).at(column) != 0) {
+                new_row.push_back(board.at(row).at(column));
+            }
+            else{
+            }
         }
+        while (new_row.size() != counter) {
+            if (counter + 1 < new_row.size() && new_row.at(counter) == new_row.at(counter+1)) {
+                merged_row.push_back(new_row.at(counter) + new_row.at(counter + 1));
+                counter += 2;
+            }
+            else{
+                merged_row.push_back(new_row.at(counter));
+                counter++;
+            }
+        }
+        while (merged_row.size() < board.size()) {
+            merged_row.push_back(0);
+        }
+        board.at(row) = merged_row;
     }
-    //hier weiter machen!
-    while (new_row.size() < board.size()) {
-        new_row.push_back(0);
+    if (board_before_move != board) {
+        make_number_appear();
+    }else{
     }
-    board.at(0) = new_row;
-    cout << new_row.size() << endl;
 }
