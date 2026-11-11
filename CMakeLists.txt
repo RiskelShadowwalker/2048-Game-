@@ -3,6 +3,13 @@ cmake_minimum_required(VERSION 3.23)
 # Must be set BEFORE project() -- ignored on non-Apple hosts.
 set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum macOS version")
 
+# Must also be set BEFORE project(): a MinGW compiler on a Linux host means we
+# cross-compile for Windows. Without this CMake assumes the target is Linux,
+# MINGW stays unset, and the -static block below is silently skipped.
+if(NOT CMAKE_SYSTEM_NAME AND CMAKE_CXX_COMPILER MATCHES "mingw32")
+    set(CMAKE_SYSTEM_NAME Windows)
+endif()
+
 # Only line you rename per project. The target below follows automatically.
 project(2048-Game-)
 
